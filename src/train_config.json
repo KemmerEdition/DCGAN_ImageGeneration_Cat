@@ -59,9 +59,9 @@
         "gamma": 0.9999977
     },
     "trainer": {
-        "epochs": 100,
+        "epochs": 150,
         "it_per_epoch": 1000,
-        "save_period": 5,
+        "save_period": 10,
         "log_every_step": 100
     },
     "wandb": {

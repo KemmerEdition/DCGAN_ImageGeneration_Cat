@@ -5,7 +5,8 @@ import torch
 import torch.nn as nn
 
 from piq import FID, SSIMLoss
-
+from torch.utils.data import DataLoader
+from src.dataset import BaseData
 from src.utils.utils import make_train_image, make_mega_image
 
 
@@ -125,6 +126,7 @@ class Trainer:
         constructed_imgs = []
         with torch.no_grad():
             for batch in self.test_dataloader:
+                i = 0
                 self.move_batch_to_device(batch)
                 bs = batch["img"].shape[0]
                 samples = self.g_model(self.fixed_noise[last_idx: last_idx + bs, ...].unsqueeze(-1).unsqueeze(-1))
@@ -132,14 +134,23 @@ class Trainer:
                 real_imgs.append(batch["img"].detach())
                 constructed_imgs.append(samples.detach())
                 last_idx += bs
+                if i == 0:
+                    real_images_dataset = BaseData(batch['img'].detach())
+                    constructed_images_dataset = BaseData(samples.detach())
+                    i += 1
 
         convert_to_01 = lambda imgs: (imgs - imgs.min()) / (imgs.max() - imgs.min())
         real_imgs = convert_to_01(torch.cat(real_imgs))
         constructed_imgs = convert_to_01(torch.cat(constructed_imgs))
+
+        real_images_dataloader = DataLoader(real_images_dataset)
+        constructed_images_dataloader = DataLoader(constructed_images_dataset)
+        real_imgs_features = self.fid_metric.compute_metric(real_images_dataloader)
+        constructed_imgs_features = self.fid_metric.compute_metric(constructed_images_dataloader)
+
         self.writer.log(
             {
-                "test_FID": self.fid_metric.compute_metric(real_imgs.flatten(1),
-                                                           constructed_imgs.flatten(1)).cpu().numpy(),
+                "test_FID": self.fid_metric(real_imgs_features, constructed_imgs_features).item(),
                 "test_SSIM": self.ssim_metric(real_imgs, constructed_imgs).item(),
                 "test": wandb.Image(make_mega_image(constructed_imgs.cpu().numpy(), 8)),
             },
