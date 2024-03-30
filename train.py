@@ -23,7 +23,9 @@ def gan_training_pipeline(args, config):
     save_dir = f"saved/{current_time}"
     os.makedirs(save_dir, exist_ok=True)
 
-    config["wandb"]["project"] = args.wandb_run_name
+    if args.wandb:
+        if args.wandb_run_name:
+            config["wandb"]["project"] = args.wandb_run_name
     writer = WandbWriter(**config["wandb"])
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

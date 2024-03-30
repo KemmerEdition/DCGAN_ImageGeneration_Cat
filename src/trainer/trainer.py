@@ -145,8 +145,8 @@ class Trainer:
 
         real_images_dataloader = DataLoader(real_images_dataset)
         constructed_images_dataloader = DataLoader(constructed_images_dataset)
-        real_imgs_features = self.fid_metric.compute_metric(real_images_dataloader)
-        constructed_imgs_features = self.fid_metric.compute_metric(constructed_images_dataloader)
+        real_imgs_features = self.fid_metric.compute_feats(real_images_dataloader)
+        constructed_imgs_features = self.fid_metric.compute_feats(constructed_images_dataloader)
 
         self.writer.log(
             {
