@@ -1,0 +1,70 @@
+{
+    "generator": {
+        "type": "Generator",
+        "args": {
+            "latent_dim": 100,
+            "hidden_dim": 64,
+            "n_channels": 3
+        }
+    },
+    "discriminator": {
+        "type": "Discriminator",
+        "args": {
+            "n_channels": 3,
+            "hidden_dim": 64
+        }
+    },
+    "data": {
+        "train": {
+            "type": "CatData",
+            "dataset_args": {
+                "root": "/kaggle/input/cats-faces-64x64-for-generative-models/cats",
+                "train": true,
+                "limit": 14000
+            },
+            "dataloader_args": {
+                "batch_size": 128,
+                "num_workers": 1,
+                "shuffle": true
+            }
+        },
+        "test": {
+            "type": "CatData",
+            "dataset_args": {
+                "root": "/kaggle/input/cats-faces-64x64-for-generative-models/cats",
+                "train": false,
+                "limit": 1024
+            },
+            "dataloader_args": {
+                "batch_size": 128,
+                "num_workers": 1,
+                "shuffle": false
+            }
+        }
+    },
+    "generator_optimizer": {
+        "lr": 2e-4,
+        "betas": [0.5, 0.999],
+        "weight_decay": 0
+    },
+    "discriminator_optimizer": {
+        "lr": 2e-4,
+        "betas": [0.5, 0.999],
+        "weight_decay": 0
+    },
+    "generator_lr_scheduler": {
+        "gamma": 0.9999977
+    },
+    "discriminator_lr_scheduler": {
+        "gamma": 0.9999977
+    },
+    "trainer": {
+        "epochs": 100,
+        "it_per_epoch": 1000,
+        "save_period": 5,
+        "log_every_step": 100
+    },
+    "wandb": {
+        "project": "cat_gan"
+    }
+}
