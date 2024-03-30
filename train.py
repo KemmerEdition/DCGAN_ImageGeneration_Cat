@@ -73,7 +73,7 @@ def gan_training_pipeline(args, config):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", default="src/train_config.json", type=str, help="config file path (default: configs/train.json)")
+    parser.add_argument("-c", "--config", default="/kaggle/working/DCGanCat/src/train_config.json", type=str, help="config file path (default: configs/train.json)")
     parser.add_argument("-w", "--wandb", default=False, type=bool, help="send logs to wandb (default: False)")
     parser.add_argument("-wn", "--wandb-run-name", default=None, type=str, help="wandb run name (default: None)")
     args = parser.parse_args()
