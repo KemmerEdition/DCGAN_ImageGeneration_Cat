@@ -28,4 +28,4 @@ You need to add the [dataset](https://www.kaggle.com/datasets/spandan2/cats-face
    ``` 
 Enjoy the results!
 
-![cats_gen2.gif](..%2F..%2Fcats_gen2.gif)
+![cats_gen2.gif](https://github.com/KemmerEdition/DcganCat/blob/master/src/cats_gen2.gif)
